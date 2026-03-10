@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'webview_screen.dart';
 
 class Task {
   final String title;
-  final String taskUrl;
+  final String taskLink;
   final String? videoUrl;
 
-  Task({required this.title, required this.taskUrl, this.videoUrl});
+  Task({required this.title, required this.taskLink, this.videoUrl});
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       title: map['task_title'] ?? 'No Title',
-      taskUrl: map['task_url'] ?? '',
-      videoUrl: map['video_url'],
+      taskLink: map['task_link'] ?? '',
+      videoUrl: map['video_link'],
     );
   }
 }
@@ -43,7 +44,7 @@ class _TaskScreenState extends State<TaskScreen> {
     try {
       final response = await _supabase
           .from('tasks')
-          .select('task_title, task_url, video_url')
+          .select('task_title, task_link, video_link')
           .eq('site_name', widget.siteName.toLowerCase());
 
       if (mounted) {
@@ -59,11 +60,17 @@ class _TaskScreenState extends State<TaskScreen> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _error = 'Failed to fetch tasks: $e';
+          _error = 'failed_to_fetch_tasks'.tr(
+            namedArgs: {'error': e.toString()},
+          );
         });
         ScaffoldMessenger.of(context).showSnackBar(
           // This is fine, but we'll also show the error in the UI
-          SnackBar(content: Text('Failed to fetch tasks: $e')),
+          SnackBar(
+            content: Text(
+              'failed_to_fetch_tasks'.tr(namedArgs: {'error': e.toString()}),
+            ),
+          ),
         );
       }
     }
@@ -78,7 +85,7 @@ class _TaskScreenState extends State<TaskScreen> {
     } else {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('URL is not available.')));
+      ).showSnackBar(SnackBar(content: Text('url_is_not_available'.tr())));
     }
   }
 
@@ -116,7 +123,7 @@ class _TaskScreenState extends State<TaskScreen> {
               ),
             )
           : _tasks.isEmpty
-          ? const Center(child: Text('No tasks available for this site.'))
+          ? Center(child: Text('no_tasks'.tr()))
           : Column(
               children: [
                 // Referral Button
@@ -132,9 +139,9 @@ class _TaskScreenState extends State<TaskScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Go to Website',
-                        style: TextStyle(
+                      child: Text(
+                        'go_to_website'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -152,7 +159,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       final task = _tasks[index];
                       return Card(
                         elevation: 4,
-                        shadowColor: Colors.grey.withOpacity(0.5),
+                        shadowColor: Colors.grey.withValues(alpha: 0.5),
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -174,9 +181,10 @@ class _TaskScreenState extends State<TaskScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ElevatedButton.icon(
-                                    onPressed: () => _openWebView(task.taskUrl),
+                                    onPressed: () =>
+                                        _openWebView(task.taskLink),
                                     icon: const Icon(Icons.arrow_forward),
-                                    label: const Text('Start Task'),
+                                    label: Text('start_task'.tr()),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,
@@ -193,7 +201,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                         task.videoUrl!,
                                       ), // Watch Tutorial
                                       icon: const Icon(Icons.arrow_forward),
-                                      label: const Text('Watch Video'),
+                                      label: Text('watch_video'.tr()),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,

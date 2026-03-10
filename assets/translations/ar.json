@@ -1,0 +1,19 @@
+{
+  "tasks": "المهام",
+  "login": "تسجيل الدخول",
+  "register": "إنشاء حساب",
+  "home": "الرئيسية",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "send_reset_link": "إرسال رابط إعادة التعيين",
+  "reset_link_sent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+  "new_password": "كلمة المرور الجديدة",
+  "confirm_password": "تأكيد كلمة المرور الجديدة",
+  "update_password": "تحديث كلمة المرور",
+  "password_updated_successfully": "تم تحديث كلمة المرور بنجاح",
+  "passwords_do_not_match": "كلمتا المرور غير متطابقتين",
+  "error_enter_new_password": "الرجاء إدخال كلمة مرور جديدة",
+  "email_address": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "error_valid_email": "الرجاء إدخال بريد إلكتروني صحيح",
+  "error_enter_password": "الرجاء إدخال كلمة المرور"
+}

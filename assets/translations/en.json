@@ -1,0 +1,19 @@
+{
+  "tasks": "Tasks",
+  "login": "Login",
+  "register": "Register",
+  "home": "Home",
+  "forgot_password": "Forgot Password?",
+  "send_reset_link": "Send Reset Link",
+  "reset_link_sent": "Password reset link sent to your email",
+  "new_password": "New Password",
+  "confirm_password": "Confirm New Password",
+  "update_password": "Update Password",
+  "password_updated_successfully": "Password updated successfully",
+  "passwords_do_not_match": "Passwords do not match",
+  "error_enter_new_password": "Please enter a new password",
+  "email_address": "Email Address",
+  "password": "Password",
+  "error_valid_email": "Please enter a valid email address",
+  "error_enter_password": "Please enter your password"
+}

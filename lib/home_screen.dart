@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'task_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Earning Sites')),
+      appBar: AppBar(title: Text('earning_sites'.tr())),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemCount: _sites.length,
