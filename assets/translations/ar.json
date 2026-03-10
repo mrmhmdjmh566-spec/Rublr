@@ -15,5 +15,10 @@
   "email_address": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "error_valid_email": "الرجاء إدخال بريد إلكتروني صحيح",
-  "error_enter_password": "الرجاء إدخال كلمة المرور"
+  "error_enter_password": "الرجاء إدخال كلمة المرور",
+  "full_name": "الاسم الكامل",
+  "error_enter_name": "الرجاء إدخال اسمك",
+  "error_confirm_password": "الرجاء تأكيد كلمة المرور",
+  "welcome_message": "أهلاً بك، {}!",
+  "dont_have_account": "ليس لديك حساب؟ سجل الآن"
 }

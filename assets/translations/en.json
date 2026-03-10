@@ -15,5 +15,10 @@
   "email_address": "Email Address",
   "password": "Password",
   "error_valid_email": "Please enter a valid email address",
-  "error_enter_password": "Please enter your password"
+  "error_enter_password": "Please enter your password",
+  "full_name": "Full Name",
+  "error_enter_name": "Please enter your name",
+  "error_confirm_password": "Please confirm your password",
+  "welcome_message": "Welcome, {}!",
+  "dont_have_account": "Don't have an account? Register"
 }

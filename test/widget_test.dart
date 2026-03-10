@@ -26,9 +26,9 @@ void main() {
         child: const MyApp(),
       ),
     );
-    await tester.pump(); // Pump again to process localization
-    // Verify that our app shows translated text. 'en' is the default.
-    expect(find.text('Tasks'), findsOneWidget);
-    expect(find.text('Login'), findsOneWidget);
+    await tester.pumpAndSettle(); // Let navigation to initial route finish
+    // Verify that our app shows the login screen. 'en' is the default.
+    expect(find.widgetWithText(AppBar, 'Login'), findsOneWidget);
+    expect(find.text('Email Address'), findsOneWidget);
   });
 }

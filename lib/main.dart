@@ -4,35 +4,31 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:omar_242/forgot_password_screen.dart';
 import 'package:omar_242/login_screen.dart';
+import 'package:omar_242/home_screen.dart';
 import 'package:omar_242/reset_password_screen.dart';
+import 'package:omar_242/register_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 // Global navigator key to allow navigation from outside the widget tree
 final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  // تأكد من تهيئة Flutter bindings قبل أي شيء آخر
   WidgetsFlutterBinding.ensureInitialized();
-  // قم بتهيئة EasyLocalization
   await EasyLocalization.ensureInitialized();
 
   // Initialize Supabase
   await Supabase.initialize(
-    // TODO: Replace with your Supabase URL and Anon Key
-    url: 'YOUR_SUPABASE_URL',
-    anonKey: 'YOUR_SUPABASE_ANON_KEY',
+    url: 'https://kittbflniwjsasxynnqx.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpdHRiZmxuaXdqc2FzeHlubnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NTU3MTYsImV4cCI6MjA4NzQzMTcxNn0.BKNG_72qE7HpB8a90LV1wfbL4A4RGFsG6_THItWi7FE',
   );
 
   runApp(
     EasyLocalization(
-      // اللغات التي يدعمها تطبيقك
       supportedLocales: [Locale('en'), Locale('ar')],
-      // المسار إلى ملفات الترجمة
       path: 'assets/translations',
-      // اللغة الافتراضية في حال كانت لغة الجهاز غير مدعومة
       fallbackLocale: Locale('en'),
-      // الويدجت الرئيسي لتطبيقك
       child: const MyApp(),
     ),
   );
@@ -46,11 +42,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late final AppLinks _appLinks;
   StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
+    _appLinks = AppLinks();
     _handleIncomingLinks();
     _handleInitialUri();
   }
@@ -61,34 +59,33 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  /// Handle incoming links - (e.g., when app is already running)
+  /// Handle incoming links (when app is running)
   void _handleIncomingLinks() {
-    _sub = uriLinkStream.listen(
-      (Uri? uri) {
+    _sub = _appLinks.uriLinkStream.listen(
+      (uri) {
         if (!mounted) return;
-        if (uri != null &&
-            uri.scheme == 'omar242' &&
-            uri.host == 'reset-password') {
+        if (uri.scheme == 'omar242' && uri.host == 'reset-password') {
           _navigatorKey.currentState?.pushNamed('/reset-password');
         }
       },
       onError: (Object err) {
-        // Handle error
+        // Handle errors
       },
     );
   }
 
-  /// Handle the initial Uri - (e.g., when app is not running)
+  /// Handle the initial Uri (when app is not running)
   Future<void> _handleInitialUri() async {
     try {
-      final uri = await getInitialUri();
+      // تعديل هنا: getInitialAppLink → getInitialLink
+      final uri = await _appLinks.getInitialLink();
       if (uri != null &&
           uri.scheme == 'omar242' &&
           uri.host == 'reset-password') {
         _navigatorKey.currentState?.pushNamed('/reset-password');
       }
     } on FormatException {
-      // Potentially ignore if the link is malformed
+      // Ignore malformed links
     }
   }
 
@@ -96,66 +93,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: _navigatorKey,
-      // هذه الأسطر الثلاثة ضرورية لربط MaterialApp مع EasyLocalization
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: 'ruble_earner'.tr(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const MyHomePage(),
+        '/home': (context) => const HomeScreen(),
+        '/register': (context) => const RegisterScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
       },
-    );
-  }
-}
-
-// هذه صفحة تجريبية يمكنك استخدامها لاختبار تغيير اللغة
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // استخدام مفتاح الترجمة من ملفات json
-        title: Text('tasks'.tr()),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('login'.tr()),
-            const SizedBox(height: 20),
-            Text('register'.tr()),
-            const SizedBox(height: 40),
-            // أزرار لتغيير اللغة للتجربة
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // تغيير اللغة إلى العربية
-                    context.setLocale(const Locale('ar'));
-                  },
-                  child: const Text('العربية'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // تغيير اللغة إلى الإنجليزية
-                    context.setLocale(const Locale('en'));
-                  },
-                  child: const Text('English'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
